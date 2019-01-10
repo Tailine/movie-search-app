@@ -1,9 +1,9 @@
-import * as React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import {Header} from 'src/components/Header';
-import Details from '../Details';
+import * as React from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import { Header } from "src/components/Header";
+import { Details } from "../Details";
 // import {SearchInput} from '../../components/SearchInput';
-import {Movies} from '../Movies';
+import { Movies } from "../Movies";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 interface IState {
@@ -11,14 +11,14 @@ interface IState {
 }
 
 class App extends React.Component<{}, IState> {
-
   public render() {
-
     const GlobalStyle = createGlobalStyle`
+      @import url('https://fonts.googleapis.com/css?family=Lato');
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: 'Lato';
       }
     `;
 
@@ -28,18 +28,18 @@ class App extends React.Component<{}, IState> {
     `;
 
     return (
-        <>
-          <GlobalStyle />
-          <Header />
-          <Wrapper>
-            <Router>
-              <Switch>
-                <Route path="/detalhes" component={Details} />
-                <Route path="/movies" component={Movies} />
-              </Switch>
-            </Router>
-          </Wrapper>
-        </>
+      <>
+        <GlobalStyle />
+        <Header />
+        <Wrapper>
+          <Router>
+            <Switch>
+              <Route path="/detalhes/:id" component={Details} />
+              <Route path="/" component={Movies} />
+            </Switch>
+          </Router>
+        </Wrapper>
+      </>
     );
   }
 }
