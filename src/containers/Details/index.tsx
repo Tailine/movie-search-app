@@ -1,27 +1,40 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-// import { getDetails } from "src/api";
-import { IMovieDetails } from "src/api/types";
+import { getDetails } from "src/api";
+import { IMovieDetails, IGenre } from "src/api/types";
 import styled from "styled-components";
 
-interface IParamsProps extends RouteComponentProps<any> {
-  match: any;
-}
+interface IParamsProps extends RouteComponentProps<{ id: string }> {}
 
 interface IState {
-  details: IMovieDetails[];
+  details: IMovieDetails;
 }
 
-export class Details extends React.Component<IParamsProps, {}, IState> {
+export class Details extends React.Component<IParamsProps, IState> {
   public state: IState = {
-    details: []
+    details: {
+      budget: 0,
+      original_language: "",
+      overview: "",
+      status: "",
+      title: "",
+      poster_path: "",
+      genres: [],
+      runtime: 0,
+      release_date: "",
+      revenue: 0
+    }
   };
 
-  //   private getMovieDetails = async () => {
-  //   const movieId = this.props.match.params.id;
-  //   const details = await getDetails(movieId);
-  //   this.setState({ details });
-  //   };
+  public componentDidMount() {
+    this.getMovieDetails();
+  }
+
+  private getMovieDetails = async () => {
+    const movieId = this.props.match.params.id;
+    const details = await getDetails(movieId);
+    this.setState({ details });
+  };
 
   public render() {
     const Wrapper = styled.div`
@@ -30,19 +43,23 @@ export class Details extends React.Component<IParamsProps, {}, IState> {
     `;
 
     const HeaderContainer = styled.div`
-      background-color: gray;
-      color: white;
+      background-color: #e6e6e6;
+      color: #3f5efb;
       display: flex;
       justify-content: space-between;
       padding: 1em;
-      font-size: 1.2em;
+      font-size: 1.8em;
     `;
 
     const Title = styled.p``;
 
-    const Date = styled.p``;
+    const Date = styled.p`
+      color: #959595;
+      font-size: 0.7em;
+    `;
 
     const Content = styled.div`
+      background-color: #f2f2f2;
       display: grid;
       grid-template-columns: 700px auto;
     `;
@@ -56,15 +73,21 @@ export class Details extends React.Component<IParamsProps, {}, IState> {
     `;
 
     const Subtitle = styled.h2`
-      color: #1b4a96;
+      color: #3f5efb;
       font-weight: 100;
+      font-size: 1.3em;
+    `;
+
+    const Paragraph = styled.p`
+      margin-top: 0.7em;
+      text-aling: justify;
     `;
 
     const Line = styled.hr`
       display: block;
       height: 1px;
       border: 0;
-      border-top: 2px solid #00baba;
+      border-top: 2px solid #79edeb;
       margin: 1em 0;
       padding: 0;
     `;
@@ -85,60 +108,82 @@ export class Details extends React.Component<IParamsProps, {}, IState> {
     const MovieInfoTitle = styled.p`
       font-size: 1.2em;
       padding: 0.3em;
-      color: #1b4a96;
+      color: #3f5efb;
     `;
 
-    const MovieInfoTitleDesc = styled.p`
+    const MovieInfoDesc = styled.p`
       font-size: 0.8em;
     `;
+
+    const Genre = styled.div`
+      border-radius: 15px;
+      border: 1px solid #3f5efb;
+      display: inline-block;
+      padding: 0.2em 0.6em;
+      margin: 3em 0.6em;
+      background-color: #fff;
+      color: #3f5efb;
+    `;
+
+    const { details } = this.state;
+    const date = details.release_date.split("-");
+    const formatedDate = `${date[2]}/${date[1]}/${date[1]}`;
+    const hour = Math.floor(details.runtime / 60);
+    const min = details.runtime % 60;
+
+    const displayGenres = (genresArray: IGenre[]) => {
+      const genres = genresArray.map((genre, id) => {
+        return <Genre key={id}>{genre.name}</Genre>;
+      });
+      return genres;
+    };
 
     return (
       <>
         <Wrapper>
           <HeaderContainer>
-            <Title>Thor: Ragnarok</Title>
-            <Date>25/10/2015</Date>
+            <Title>{details.title}</Title>
+            <Date>{formatedDate}</Date>
           </HeaderContainer>
           <Content>
             <MovieDetails>
               <Subtitle>Sinopse</Subtitle>
               <Line />
-              <SinopseContent>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Eligendi nostrum cupiditate facere, nam assumenda quisquam ea
-                optio a deleniti, eum, hic sunt consectetur eaque blanditiis
-                veritatis ratione at deserunt totam.
-              </SinopseContent>
+              <Paragraph>{details.overview}</Paragraph>
+              <SinopseContent />
               <Subtitle>Informações</Subtitle>
               <Line />
               <MovieInfoContainer>
                 <MovieInfo>
                   <MovieInfoTitle>Situação</MovieInfoTitle>
-                  <MovieInfoTitleDesc>Lançado</MovieInfoTitleDesc>
+                  <MovieInfoDesc>{details.status}</MovieInfoDesc>
                 </MovieInfo>
                 <MovieInfo>
                   <MovieInfoTitle>Idioma</MovieInfoTitle>
-                  <MovieInfoTitleDesc>Inglês</MovieInfoTitleDesc>
+                  <MovieInfoDesc>{details.original_language}</MovieInfoDesc>
                 </MovieInfo>
                 <MovieInfo>
                   <MovieInfoTitle>Duração</MovieInfoTitle>
-                  <MovieInfoTitleDesc>2h 10min</MovieInfoTitleDesc>
+                  <MovieInfoDesc>{`${hour}h ${min}min`}</MovieInfoDesc>
                 </MovieInfo>
                 <MovieInfo>
                   <MovieInfoTitle>Orçamento</MovieInfoTitle>
-                  <MovieInfoTitleDesc>$180.000.000,00</MovieInfoTitleDesc>
+                  <MovieInfoDesc>${details.budget}</MovieInfoDesc>
                 </MovieInfo>
                 <MovieInfo>
                   <MovieInfoTitle>Receita</MovieInfoTitle>
-                  <MovieInfoTitleDesc>$853.977.000,00</MovieInfoTitleDesc>
+                  <MovieInfoDesc>$853.977.000,00</MovieInfoDesc>
                 </MovieInfo>
                 <MovieInfo>
                   <MovieInfoTitle>Lucro</MovieInfoTitle>
-                  <MovieInfoTitleDesc>$673.977.000,00</MovieInfoTitleDesc>
+                  <MovieInfoDesc>${details.revenue}</MovieInfoDesc>
                 </MovieInfo>
               </MovieInfoContainer>
+              {displayGenres(details.genres)}
             </MovieDetails>
-            <Cover src="https://echosrecordbar.co.za/storage/90865/conversions/101544_medium.jpg" />
+            <Cover
+              src={`https://image.tmdb.org/t/p/w400/${details.poster_path}`}
+            />
           </Content>
         </Wrapper>
       </>

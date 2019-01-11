@@ -35,6 +35,7 @@ class App extends React.Component<{}, IState> {
           <Router>
             <Switch>
               <Route path="/detalhes/:id" component={Details} />
+              <Route path="/:value" component={Movies} />
               <Route path="/" component={Movies} />
             </Switch>
           </Router>

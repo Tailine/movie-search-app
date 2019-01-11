@@ -1,32 +1,61 @@
 import * as React from "react";
 import styled from "styled-components";
 import { SearchInput } from "src/components/SearchInput";
-import { IMovie } from "src/api/types";
-import { getMovies } from "src/api";
-import { Link } from "react-router-dom";
+import { IMovie, IGenre } from "src/api/types";
+import { getMovies, getGenreList } from "src/api";
+import { Link, RouteComponentProps } from "react-router-dom";
 
 interface IState {
   userInput: string;
   movies: IMovie[];
+  loading: boolean;
+  genreList: { genres: IGenre[] };
 }
 
-export class Movies extends React.Component<{}, IState> {
+interface IParamsProps extends RouteComponentProps<{ value?: string }> {}
+
+export class Movies extends React.Component<IParamsProps, IState> {
   public state: IState = {
     userInput: "",
-    movies: []
+    movies: [],
+    loading: false,
+    genreList: { genres: [] }
   };
 
-  private onSubmitSearch = async () => {
-    const movies = await getMovies(this.state.userInput);
-    this.setState({ movies }, () => {
-      console.log(movies);
-    });
+  public componentDidMount = () => {
+    this.getGenres();
+    if (this.props.match.params) {
+      this.onSubmitSearch(this.props.match.params.value);
+    }
+  };
+
+  private getGenres = async () => {
+    const genreList = await getGenreList();
+    this.setState({ genreList });
+  };
+
+  private onSubmitSearch = async (value?: string) => {
+    const val = this.state.userInput === "" ? value! : this.state.userInput;
+    this.props.history.push(val); // update url
+    this.setState({ loading: true });
+    const movies = await getMovies(val);
+    this.setState({ loading: false, movies });
   };
 
   private onChangeSearchInput = (value: string) => {
     this.setState({
       userInput: value
     });
+  };
+
+  private filterGenre = (genre: number[]) => {
+    const res = genre.map(genreElement => {
+      const x = this.state.genreList.genres.find(
+        genreListElement => genreListElement.id === genreElement
+      )!;
+      return x.name;
+    });
+    return res;
   };
 
   public render() {
@@ -95,12 +124,27 @@ export class Movies extends React.Component<{}, IState> {
       color: #7e7e7f;
     `;
 
-    const { movies } = this.state;
+    const Genre = styled.div`
+      border-radius: 15px;
+      border: 1px solid #3f5efb;
+      display: inline-block;
+      padding: 0.1em 0.3em;
+      margin: 1em 0.6em;
+    `;
+
+    const { movies, loading } = this.state;
+    const displayGenres = (g: string[]) => {
+      const genres = g.map((genre, id) => {
+        return <Genre key={id}>{genre}</Genre>;
+      });
+      return genres;
+    };
 
     const displayMovies = () => {
       const renderMovies = movies.map(m => {
         const date = m.release_date.split("-");
         const formatedDate = `${date[2]}/${date[1]}/${date[0]}`;
+        const filteredGenres = this.filterGenre(m.genre_ids);
         return (
           <DetailsLink to={"/detalhes/" + m.id} key={m.id}>
             <Card key={m.id}>
@@ -112,6 +156,7 @@ export class Movies extends React.Component<{}, IState> {
                   <Rating>{m.vote_average * 10}%</Rating>
                 </RatingContainer>
                 <Sinopse>{m.overview}</Sinopse>
+                {displayGenres(filteredGenres)}
               </Description>
             </Card>
           </DetailsLink>
@@ -127,7 +172,11 @@ export class Movies extends React.Component<{}, IState> {
           value={this.state.userInput}
           onChange={this.onChangeSearchInput}
         />
-        {movies.length > 0 ? displayMovies() : null}
+        {loading ? (
+          <span>loading</span>
+        ) : movies.length > 0 ? (
+          displayMovies()
+        ) : null}
       </>
     );
   }

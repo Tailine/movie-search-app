@@ -4,7 +4,7 @@ export interface IMovie {
   release_date: string;
   poster_path: string;
   overview: string;
-  genre: number[];
+  genre_ids: number[];
   vote_average: number;
 }
 
@@ -21,4 +21,14 @@ export interface IMovieDetails {
   overview: string;
   status: string;
   title: string;
+  poster_path: string;
+  genres: IGenre[];
+  release_date: string;
+  runtime: number;
+  revenue: number;
+}
+
+export interface IGenre {
+  id: number;
+  name: string;
 }
