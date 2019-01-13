@@ -62,6 +62,8 @@ export class Movies extends React.Component<IParamsProps, IState> {
   public render() {
     const Card = styled.div`
       margin: 3em 0;
+      background-color: #0F2027;
+      color: white;
 
       @media (min-width: 760px) {
         display: grid;
