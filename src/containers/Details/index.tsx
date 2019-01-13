@@ -3,11 +3,13 @@ import { RouteComponentProps } from "react-router-dom";
 import { getDetails } from "src/api";
 import { IMovieDetails, IGenre } from "src/api/types";
 import styled from "styled-components";
+import Loading from 'react-loading';
 
 interface IParamsProps extends RouteComponentProps<{ id: string }> {}
 
 interface IState {
   details: IMovieDetails;
+  loading: boolean;
 }
 
 export class Details extends React.Component<IParamsProps, IState> {
@@ -23,7 +25,8 @@ export class Details extends React.Component<IParamsProps, IState> {
       runtime: 0,
       release_date: "",
       revenue: 0
-    }
+    },
+    loading: true,
   };
 
   public componentDidMount() {
@@ -33,7 +36,7 @@ export class Details extends React.Component<IParamsProps, IState> {
   private getMovieDetails = async () => {
     const movieId = this.props.match.params.id;
     const details = await getDetails(movieId);
-    this.setState({ details });
+    this.setState({ details, loading: false });
   };
 
   public render() {
@@ -70,6 +73,7 @@ export class Details extends React.Component<IParamsProps, IState> {
 
     const Cover = styled.img`
       width: 100%;
+      height: 100%;
     `;
 
     const Subtitle = styled.h2`
@@ -125,7 +129,7 @@ export class Details extends React.Component<IParamsProps, IState> {
       color: #3f5efb;
     `;
 
-    const { details } = this.state;
+    const { details, loading } = this.state;
     const date = details.release_date.split("-");
     const formatedDate = `${date[2]}/${date[1]}/${date[1]}`;
     const hour = Math.floor(details.runtime / 60);
@@ -140,6 +144,7 @@ export class Details extends React.Component<IParamsProps, IState> {
 
     return (
       <>
+        { loading ? <Loading /> : 
         <Wrapper>
           <HeaderContainer>
             <Title>{details.title}</Title>
@@ -185,7 +190,8 @@ export class Details extends React.Component<IParamsProps, IState> {
               src={`https://image.tmdb.org/t/p/w400/${details.poster_path}`}
             />
           </Content>
-        </Wrapper>
+        </Wrapper> 
+      }
       </>
     );
   }

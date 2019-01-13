@@ -4,6 +4,7 @@ import { SearchInput } from "src/components/SearchInput";
 import { IMovie, IGenre } from "src/api/types";
 import { getMovies, getGenreList } from "src/api";
 import { Link, RouteComponentProps } from "react-router-dom";
+import { LoadingComponent } from 'src/components/BaseComponents';
 
 interface IState {
   userInput: string;
@@ -48,12 +49,12 @@ export class Movies extends React.Component<IParamsProps, IState> {
     });
   };
 
-  private filterGenre = (genre: number[]) => {
-    const res = genre.map(genreElement => {
-      const x = this.state.genreList.genres.find(
+  private filterGenre = (genreid: number[]) => {
+    const res = genreid.map(genreElement => {
+      const filteredGenre = this.state.genreList.genres.find(
         genreListElement => genreListElement.id === genreElement
       )!;
-      return x.name;
+      return filteredGenre.name;
     });
     return res;
   };
@@ -72,10 +73,10 @@ export class Movies extends React.Component<IParamsProps, IState> {
     const Cover = styled.img`
       width: 100%;
       max-height: 400px;
-      margin-bottom: -5px;
 
       @media (min-width: 760px) {
         min-height: 400px;
+        margin-bottom: -5px;
       }
     `;
 
@@ -84,18 +85,17 @@ export class Movies extends React.Component<IParamsProps, IState> {
     `;
 
     const FilmTitle = styled.h2`
-      background-image: linear-gradient(to right, #3f5efb, #4510a1);
+      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
       color: white;
       padding: 0.5em 4em;
     `;
 
     const Sinopse = styled.div`
       padding: 0.7em;
-      margin-top: 1em;
     `;
 
     const RatingContainer = styled.div`
-      background-image: linear-gradient(to right, #3f5efb, #4510a1);
+      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
       display: inline-block;
       border-radius: 50%;
       padding: 0.2em;
@@ -105,18 +105,18 @@ export class Movies extends React.Component<IParamsProps, IState> {
     `;
 
     const Rating = styled.div`
-      background-color: #116193;
       border: 3px solid #eee;
       display: inline-block;
       border-radius: 50%;
       padding: 1em;
-      background-image: linear-gradient(to right, #3f5efb, #4510a1);
+      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
       color: #eee;
     `;
 
     const Date = styled.p`
-      color: #c4c8ce;
+      color: #959595;
       margin-left: 7em;
+      padding-top: .5em;
     `;
 
     const DetailsLink = styled(Link)`
@@ -130,6 +130,8 @@ export class Movies extends React.Component<IParamsProps, IState> {
       display: inline-block;
       padding: 0.1em 0.3em;
       margin: 1em 0.6em;
+      background-color: #fff;
+      color: #3f5efb;
     `;
 
     const { movies, loading } = this.state;
@@ -172,11 +174,7 @@ export class Movies extends React.Component<IParamsProps, IState> {
           value={this.state.userInput}
           onChange={this.onChangeSearchInput}
         />
-        {loading ? (
-          <span>loading</span>
-        ) : movies.length > 0 ? (
-          displayMovies()
-        ) : null}
+        {loading ? <LoadingComponent /> : movies.length > 0 ? displayMovies() : null}
       </>
     );
   }
