@@ -62,7 +62,6 @@ export class Movies extends React.Component<IParamsProps, IState> {
   public render() {
     const Card = styled.div`
       margin: 3em 0;
-      background-color: #edeeef;
 
       @media (min-width: 760px) {
         display: grid;
@@ -75,27 +74,33 @@ export class Movies extends React.Component<IParamsProps, IState> {
       max-height: 400px;
 
       @media (min-width: 760px) {
-        min-height: 400px;
-        margin-bottom: -5px;
+        max-height: 100%;
       }
     `;
 
     const Description = styled.div`
       text-align: justify;
+      margin-top: -5px;
+
+      @media (min-width: 760px) {
+        margin-top: 0;
+      }
     `;
 
     const FilmTitle = styled.h2`
-      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      color: white;
+      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      color: #78ffd6;
       padding: 0.5em 4em;
     `;
 
     const Sinopse = styled.div`
+      margin-top: -30px;
       padding: 0.7em;
+      color: #2C5364;
     `;
 
     const RatingContainer = styled.div`
-      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
       display: inline-block;
       border-radius: 50%;
       padding: 0.2em;
@@ -105,12 +110,12 @@ export class Movies extends React.Component<IParamsProps, IState> {
     `;
 
     const Rating = styled.div`
+      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
       border: 3px solid #eee;
       display: inline-block;
       border-radius: 50%;
       padding: 1em;
-      background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      color: #eee;
+      color: #78ffd6;
     `;
 
     const Date = styled.p`
@@ -126,12 +131,11 @@ export class Movies extends React.Component<IParamsProps, IState> {
 
     const Genre = styled.div`
       border-radius: 15px;
-      border: 1px solid #3f5efb;
+      border: 1px solid #2C5364;
       display: inline-block;
-      padding: 0.1em 0.3em;
-      margin: 1em 0.6em;
-      background-color: #fff;
-      color: #3f5efb;
+      padding: 0.2em 0.4em;
+      margin: 2em 0.6em;
+      color: #2C5364;
     `;
 
     const { movies, loading } = this.state;

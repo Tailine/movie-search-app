@@ -21,10 +21,6 @@ class App extends React.Component<{}, IState> {
       }
     `;
 
-    const Body = styled.body`
-    background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-    `;
-
     const Wrapper = styled.div`
       width: 80%;
       margin: 0 auto;
@@ -34,17 +30,15 @@ class App extends React.Component<{}, IState> {
       <>
         <GlobalStyle />
         <Header />
-        <Body>
-          <Wrapper>
-            <Router>
-              <Switch>
-                <Route path="/detalhes/:id" component={Details} />
-                <Route path="/:value" component={Movies} />
-                <Route path="/" component={Movies} />
-              </Switch>
-            </Router>
-          </Wrapper>
-        </Body>
+        <Wrapper>
+          <Router>
+            <Switch>
+              <Route path="/detalhes/:id" component={Details} />
+              <Route path="/:value" component={Movies} />
+              <Route path="/" component={Movies} />
+            </Switch>
+          </Router>
+        </Wrapper>
       </>
     );
   }
