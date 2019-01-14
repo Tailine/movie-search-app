@@ -7,8 +7,8 @@ export const Header = () => {
             margin-top: 0;
             padding: .7em 0;
             text-align: center;
-            color: white;
-            background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+            color: #ffa000;
+            background-color: #10162a;
         `;
 
     return (

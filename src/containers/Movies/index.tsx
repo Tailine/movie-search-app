@@ -62,8 +62,9 @@ export class Movies extends React.Component<IParamsProps, IState> {
   public render() {
     const Card = styled.div`
       margin: 3em 0;
-      background-color: #0F2027;
-      color: white;
+      border-radius: 10px;
+      box-shadow: 5px 5px 5px #eae9e8;
+      background-color: #ebebeb;
 
       @media (min-width: 760px) {
         display: grid;
@@ -74,6 +75,7 @@ export class Movies extends React.Component<IParamsProps, IState> {
     const Cover = styled.img`
       width: 100%;
       max-height: 400px;
+      border-radius: 10px 0 0 10px;
 
       @media (min-width: 760px) {
         max-height: 100%;
@@ -90,34 +92,39 @@ export class Movies extends React.Component<IParamsProps, IState> {
     `;
 
     const FilmTitle = styled.h2`
-      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-      color: #78ffd6;
-      padding: 0.5em 4em;
+      background-color: #10162a;
+      color: #ffa000;
+      font-weight: 200;
+      font-size: 2em;
+      padding: 0.5em 3em;
+      border-radius: 0 10px 0 0;
     `;
 
     const Sinopse = styled.div`
       margin-top: -30px;
       padding: 0.7em;
-      color: #2C5364;
+      font-size: 1.2em;
+      color: #555555;
     `;
 
     const RatingContainer = styled.div`
-      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+      background-color: #10162a;
       display: inline-block;
       border-radius: 50%;
       padding: 0.2em;
       position: relative;
-      top: -3em;
+      top: -4.5em;
       left: 0.7em;
     `;
 
     const Rating = styled.div`
-      background-image: linear-gradient(to right, #0F2027, #203A43, #2C5364);
-      border: 3px solid #eee;
+      background-color: #10162a;
+      border: 4px solid #ffa000;
       display: inline-block;
       border-radius: 50%;
-      padding: 1em;
-      color: #78ffd6;
+      padding: 1.4em 1em;
+      color: #ffa000;
+      font-weight: bold;
     `;
 
     const Date = styled.p`
@@ -133,11 +140,12 @@ export class Movies extends React.Component<IParamsProps, IState> {
 
     const Genre = styled.div`
       border-radius: 15px;
-      border: 1px solid #2C5364;
+      border: 1px solid #10162a;
       display: inline-block;
-      padding: 0.2em 0.4em;
+      padding: 0.4em 0.6em;
       margin: 2em 0.6em;
-      color: #2C5364;
+      color: #10162a;
+      background: #fff;
     `;
 
     const { movies, loading } = this.state;

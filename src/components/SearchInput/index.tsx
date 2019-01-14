@@ -11,6 +11,17 @@ const Input = styled.input`
   width: 100%;
   padding: 0.5em;
   margin: 2em 0;
+  border-radius: 10px;
+  border: none;
+  padding: .7em;
+  background-color: #ebebeb;
+  
+  ::placeholder {
+    color: #10162a;
+  } 
+  :focus {
+    outline-width: 0;
+  }
 `;
 
 const onSubmit = (e: React.FormEvent<HTMLFormElement>, props: IProps) => {

@@ -47,7 +47,7 @@ export class Details extends React.Component<IParamsProps, IState> {
 
     const HeaderContainer = styled.div`
       background-color: #e6e6e6;
-      color: #3f5efb;
+      color: #232526;
       display: flex;
       justify-content: space-between;
       padding: 1em;
@@ -77,7 +77,7 @@ export class Details extends React.Component<IParamsProps, IState> {
     `;
 
     const Subtitle = styled.h2`
-      color: #3f5efb;
+      color: #3b4f8e;
       font-weight: 100;
       font-size: 1.3em;
     `;
@@ -85,13 +85,14 @@ export class Details extends React.Component<IParamsProps, IState> {
     const Paragraph = styled.p`
       margin-top: 0.7em;
       text-aling: justify;
+      color: #444;
     `;
 
     const Line = styled.hr`
       display: block;
       height: 1px;
       border: 0;
-      border-top: 2px solid #79edeb;
+      border-top: 2px solid #345bd8;
       margin: 1em 0;
       padding: 0;
     `;
@@ -112,7 +113,7 @@ export class Details extends React.Component<IParamsProps, IState> {
     const MovieInfoTitle = styled.p`
       font-size: 1.2em;
       padding: 0.3em;
-      color: #3f5efb;
+      color: #3b4f8e;
     `;
 
     const MovieInfoDesc = styled.p`
@@ -121,12 +122,12 @@ export class Details extends React.Component<IParamsProps, IState> {
 
     const Genre = styled.div`
       border-radius: 15px;
-      border: 1px solid #3f5efb;
+      border: 1px solid #3b4f8e;
       display: inline-block;
       padding: 0.2em 0.6em;
       margin: 3em 0.6em;
       background-color: #fff;
-      color: #3f5efb;
+      color: #3b4f8e;
     `;
 
     const { details, loading } = this.state;
