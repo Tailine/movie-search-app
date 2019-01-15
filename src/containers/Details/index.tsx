@@ -47,7 +47,7 @@ export class Details extends React.Component<IParamsProps, IState> {
 
     const HeaderContainer = styled.div`
       background-color: #e6e6e6;
-      color: #232526;
+      color: #404b88;
       display: flex;
       justify-content: space-between;
       padding: 1em;
@@ -77,7 +77,7 @@ export class Details extends React.Component<IParamsProps, IState> {
     `;
 
     const Subtitle = styled.h2`
-      color: #3b4f8e;
+      color: #404b88;
       font-weight: 100;
       font-size: 1.3em;
     `;
@@ -92,7 +92,7 @@ export class Details extends React.Component<IParamsProps, IState> {
       display: block;
       height: 1px;
       border: 0;
-      border-top: 2px solid #345bd8;
+      border-top: 2px solid #ffa000;
       margin: 1em 0;
       padding: 0;
     `;
@@ -113,7 +113,7 @@ export class Details extends React.Component<IParamsProps, IState> {
     const MovieInfoTitle = styled.p`
       font-size: 1.2em;
       padding: 0.3em;
-      color: #3b4f8e;
+      color: #404b88;
     `;
 
     const MovieInfoDesc = styled.p`
@@ -126,8 +126,8 @@ export class Details extends React.Component<IParamsProps, IState> {
       display: inline-block;
       padding: 0.2em 0.6em;
       margin: 3em 0.6em;
-      background-color: #fff;
-      color: #3b4f8e;
+      background-color: #ffedd0;
+      color: #404b88;
     `;
 
     const { details, loading } = this.state;
