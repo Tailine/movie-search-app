@@ -4,7 +4,7 @@ import { Header } from "src/components/Header";
 import { Details } from "../Details";
 import { Movies } from "../Movies";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import { Pagination } from 'src/components/Pagination';
+import { Pagination } from "../../components/Pagination";
 
 interface IState {
   movies: object;
@@ -40,7 +40,7 @@ class App extends React.Component<{}, IState> {
             </Switch>
           </Router>
         </Wrapper>
-        <Pagination total={2} activePage={1} />
+        <Pagination total={10} activePage={5} />
       </>
     );
   }
