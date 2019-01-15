@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { pagination } from "../../utils";
-import { inject } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import { MovieStore } from "src/stores";
 
 interface IProps {
@@ -11,6 +11,7 @@ interface IProps {
 }
 
 @inject("movieStore")
+@observer
 export class Pagination extends React.Component<IProps> {
   public render() {
     const PageList = styled.ul`
@@ -29,9 +30,9 @@ export class Pagination extends React.Component<IProps> {
       font-size: 1.5em;
     `;
 
-    const changePage = (page: string) => {
+    const changePage = async (page: string) => {
+      await this.props.movieStore!.getMovies(page);
       this.props.movieStore!.changePage(page);
-
       console.log(this.props.movieStore!.page);
     };
 

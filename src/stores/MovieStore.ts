@@ -8,11 +8,12 @@ export class MovieStore {
   @observable public isLoadingMovieDetails: boolean = false;
   @observable public genres: { genres: IGenre[] };
   @observable public page: string = "1";
+  @observable public userInput: string = "";
 
   @action
-  public getMovies = async (value: string, page: string) => {
+  public getMovies = async (page?: string) => {
     this.isLoadingMovieDetails = true;
-    this.movies = await getMovies(value, page);
+    this.movies = await getMovies(this.userInput, page!);
     this.isLoadingMovieDetails = false;
   };
 

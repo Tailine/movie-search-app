@@ -9,8 +9,9 @@ const GENRE_URL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_K
 export const getMovies = async (query: string, page: string) => {
   try {
     console.log("chamou");
+    console.log(page);
     const res = await axios.get<IPayloadGetMany<IMovie>>(
-      `${BASE_URL}query=${query}&language=pt-BR&page${page}`
+      `${BASE_URL}query=${query}&language=pt-BR&page=${page}`
     );
     return res.data.results;
   } catch (err) {

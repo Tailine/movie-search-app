@@ -5,7 +5,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { Loading, NotFound } from "src/components/BaseComponents";
 import { inject, observer } from "mobx-react";
 import { MovieStore } from "../../stores";
-import { toJS, observable } from "mobx";
+import { toJS } from "mobx";
 import { Pagination } from "src/components/Pagination";
 
 interface IParamsProps extends RouteComponentProps<{ value?: string }> {
@@ -15,8 +15,6 @@ interface IParamsProps extends RouteComponentProps<{ value?: string }> {
 @inject("movieStore")
 @observer
 export class Movies extends React.Component<IParamsProps> {
-  @observable private userInput: string = "";
-
   public componentDidMount = () => {
     this.getGenres();
     if (this.props.match.params) {
@@ -29,16 +27,16 @@ export class Movies extends React.Component<IParamsProps> {
   };
 
   private onSubmitSearch = async (value?: string) => {
-    const val = this.userInput === "" ? value! : this.userInput;
+    const val =
+      this.props.movieStore.userInput === ""
+        ? value!
+        : this.props.movieStore.userInput;
     this.props.history.push(val); // update url
-    await this.props.movieStore.getMovies(
-      val,
-      this.props.movieStore.currentPage
-    );
+    await this.props.movieStore.getMovies(val);
   };
 
   private onChangeSearchInput = (value: string) => {
-    this.userInput = value;
+    this.props.movieStore.userInput = value;
   };
 
   private filterGenre = (genreid: number[]) => {
@@ -178,7 +176,7 @@ export class Movies extends React.Component<IParamsProps> {
       <>
         <SearchInput
           onSubmit={this.onSubmitSearch}
-          value={this.userInput}
+          value={this.props.movieStore.userInput}
           onChange={this.onChangeSearchInput}
         />
         {this.props.movieStore.isLoadingMovieDetails ? (
