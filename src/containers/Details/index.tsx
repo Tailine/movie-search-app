@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { IMovieDetails, IGenre } from "src/api/types";
+import { IGenre } from "src/api/types";
 import styled from "styled-components";
 import Loading from "react-loading";
 import { inject, observer } from "mobx-react";
@@ -10,30 +10,9 @@ interface IParamsProps extends RouteComponentProps<{ id: string }> {
   movieStore: MovieStore;
 }
 
-interface IState {
-  details: IMovieDetails;
-  loading: boolean;
-}
-
 @inject("movieStore")
 @observer
-export class Details extends React.Component<IParamsProps, IState> {
-  public state: IState = {
-    details: {
-      budget: 0,
-      original_language: "",
-      overview: "",
-      status: "",
-      title: "",
-      poster_path: "",
-      genres: [],
-      runtime: 0,
-      release_date: "",
-      revenue: 0
-    },
-    loading: true
-  };
-
+export class Details extends React.Component<IParamsProps> {
   public componentDidMount() {
     this.getMovieDetails();
   }

@@ -5,11 +5,8 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { Loading, NotFound } from "src/components/BaseComponents";
 import { inject, observer } from "mobx-react";
 import { MovieStore } from "../../stores";
-
-interface IState {
-  userInput: string;
-  loading: boolean;
-}
+import { toJS, observable } from "mobx";
+import { Pagination } from "src/components/Pagination";
 
 interface IParamsProps extends RouteComponentProps<{ value?: string }> {
   movieStore: MovieStore;
@@ -17,11 +14,8 @@ interface IParamsProps extends RouteComponentProps<{ value?: string }> {
 
 @inject("movieStore")
 @observer
-export class Movies extends React.Component<IParamsProps, IState> {
-  public state: IState = {
-    userInput: "",
-    loading: false
-  };
+export class Movies extends React.Component<IParamsProps> {
+  @observable private userInput: string = "";
 
   public componentDidMount = () => {
     this.getGenres();
@@ -35,16 +29,16 @@ export class Movies extends React.Component<IParamsProps, IState> {
   };
 
   private onSubmitSearch = async (value?: string) => {
-    const val = this.state.userInput === "" ? value! : this.state.userInput;
+    const val = this.userInput === "" ? value! : this.userInput;
     this.props.history.push(val); // update url
-    this.setState({ loading: true });
-    await this.props.movieStore.getMovies(val);
+    await this.props.movieStore.getMovies(
+      val,
+      this.props.movieStore.currentPage
+    );
   };
 
   private onChangeSearchInput = (value: string) => {
-    this.setState({
-      userInput: value
-    });
+    this.userInput = value;
   };
 
   private filterGenre = (genreid: number[]) => {
@@ -154,6 +148,7 @@ export class Movies extends React.Component<IParamsProps, IState> {
     };
 
     const displayMovies = () => {
+      console.log(toJS(this.props.movieStore.movies));
       const renderMovies = this.props.movieStore.movies.map(m => {
         const date = m.release_date.split("-");
         const formatedDate = `${date[2]}/${date[1]}/${date[0]}`;
@@ -175,6 +170,7 @@ export class Movies extends React.Component<IParamsProps, IState> {
           </DetailsLink>
         );
       });
+      renderMovies.push(<Pagination key="key" total={5} activePage={2} />);
       return renderMovies;
     };
 
@@ -182,15 +178,16 @@ export class Movies extends React.Component<IParamsProps, IState> {
       <>
         <SearchInput
           onSubmit={this.onSubmitSearch}
-          value={this.state.userInput}
+          value={this.userInput}
           onChange={this.onChangeSearchInput}
         />
         {this.props.movieStore.isLoadingMovieDetails ? (
           <Loading />
-        ) : this.props.movieStore.movies.length > 0 ? (
-          displayMovies()
-        ) : (
+        ) : this.props.movieStore.movies.length === 0 &&
+          this.props.match.params.value ? (
           <NotFound />
+        ) : (
+          displayMovies()
         )}
       </>
     );

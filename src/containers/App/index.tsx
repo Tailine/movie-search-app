@@ -5,11 +5,7 @@ import { Details } from "../Details";
 import { Movies } from "../Movies";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
-interface IState {
-  movies: object;
-}
-
-class App extends React.Component<{}, IState> {
+class App extends React.Component {
   public render() {
     const GlobalStyle = createGlobalStyle`
       @import url('https://fonts.googleapis.com/css?family=Lato');

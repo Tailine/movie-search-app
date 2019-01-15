@@ -1,40 +1,54 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { pagination } from '../../utils';
+import * as React from "react";
+import styled from "styled-components";
+import { pagination } from "../../utils";
+import { inject } from "mobx-react";
+import { MovieStore } from "src/stores";
 
 interface IProps {
-    total: any;
-    activePage: number;
+  total: any;
+  activePage: number;
+  movieStore?: MovieStore;
 }
 
-const PageList = styled.ul`
-    display: flex;
-    justify-content: center;
-    width: 15%;
-    list-style: none;
-`;
+@inject("movieStore")
+export class Pagination extends React.Component<IProps> {
+  public render() {
+    const PageList = styled.ul`
+      display: flex;
+      justify-content: center;
+      margin: 1em auto;
+      width: 15%;
+      list-style: none;
+    `;
 
-const PageItem = styled.li`
-    color: orange;
-    display: inline-block;
-    margin: 0 auto;
-    cursor: pointer;
-`;
+    const PageItem = styled.li`
+      color: orange;
+      display: inline-block;
+      margin: 0 auto;
+      cursor: pointer;
+      font-size: 1.5em;
+    `;
 
-const displayPageList = (pages: any) => {
-    const list = pages.map((page: any) => {
-        return <PageItem key={"p" + page}>{page}</PageItem>
-    });
-    return list;
-}
+    const changePage = (page: string) => {
+      this.props.movieStore!.changePage(page);
 
-export const Pagination = (props: IProps) => {
-    const { total, activePage } = props;
-    const pages = displayPageList(pagination(total, activePage));
+      console.log(this.props.movieStore!.page);
+    };
 
-    return (
-        <PageList>
-            {pages}
-        </PageList>
-    )
+    const displayPageList = (pages: any[]) => {
+      const list = pages.map((page: any, idx) => {
+        return (
+          <PageItem onClick={() => changePage(page)} key={idx}>
+            {page}
+          </PageItem>
+        );
+      });
+      return list;
+    };
+
+    const { total, activePage } = this.props;
+    const pageList = displayPageList(pagination(total, activePage));
+
+    return <PageList>{pageList}</PageList>;
+  }
 }
