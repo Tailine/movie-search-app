@@ -1,9 +1,14 @@
 import { observable, action, computed } from "mobx";
 import { getMovies, getDetails, getGenreList } from "../api/index";
-import { IMovie, IMovieDetails, IGenre } from "src/api/types";
+import { IMovie, IMovieDetails, IGenre, IPayloadGetMany } from "src/api/types";
 
 export class MovieStore {
-  @observable public movies: IMovie[] = [];
+  @observable public movies: IPayloadGetMany<IMovie> = {
+    page: 1,
+    results: [],
+    total_pages: 0,
+    total_results: 0
+  };
   @observable public details: IMovieDetails | null = null;
   @observable public isLoadingMovieDetails: boolean = false;
   @observable public genres: { genres: IGenre[] };
@@ -20,9 +25,9 @@ export class MovieStore {
 
   @action
   public updateUserInput = (query: string) => {
-    return this.userInput = query;
-  }
- 
+    return (this.userInput = query);
+  };
+
   @action
   public getMovieDetails = async (movieId: string) => {
     this.isLoadingMovieDetails = true;

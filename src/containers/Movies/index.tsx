@@ -4,7 +4,6 @@ import { SearchInput } from "src/components/SearchInput";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Loading, NotFound } from "src/components/BaseComponents";
 import { inject, observer } from "mobx-react";
-import { toJS } from 'mobx';
 import { MovieStore } from "../../stores";
 import { Pagination } from "src/components/Pagination";
 
@@ -18,7 +17,6 @@ export class Movies extends React.Component<IParamsProps> {
   public componentDidMount = () => {
     this.getGenres();
     if (this.props.match.params.value) {
-      console.log('funcao chamada');
       this.onSubmitSearch(this.props.match.params.value);
     }
   };
@@ -147,8 +145,7 @@ export class Movies extends React.Component<IParamsProps> {
     };
 
     const displayMovies = () => {
-      console.log(toJS(this.props.movieStore.movies));
-      const renderMovies = this.props.movieStore.movies.map(m => {
+      const renderMovies = this.props.movieStore.movies.results.map(m => {
         const date = m.release_date.split("-");
         const formatedDate = `${date[2]}/${date[1]}/${date[0]}`;
         const filteredGenres = this.filterGenre(m.genre_ids);
@@ -169,7 +166,13 @@ export class Movies extends React.Component<IParamsProps> {
           </DetailsLink>
         );
       });
-      renderMovies.push(<Pagination key="key" total={5} activePage={2} />);
+      renderMovies.push(
+        <Pagination
+          key="key"
+          total={this.props.movieStore.movies.total_pages}
+          activePage={this.props.movieStore.movies.page}
+        />
+      );
       return renderMovies;
     };
 
@@ -180,14 +183,12 @@ export class Movies extends React.Component<IParamsProps> {
           value={this.props.movieStore.userInput}
           onChange={this.onChangeSearchInput}
         />
-        {this.props.movieStore.isLoadingMovieDetails ? (
-          <Loading />
-        ) : this.props.movieStore.movies.length === 0 &&
-          this.props.match.params.value ? (
-          <NotFound />
-        ) : (
-          displayMovies()
-        )}
+        {this.props.movieStore.isLoadingMovieDetails && <Loading />}
+        {!this.props.movieStore.isLoadingMovieDetails &&
+          this.props.movieStore.movies.results.length > 0 &&
+          displayMovies()}
+        {!this.props.movieStore.isLoadingMovieDetails &&
+          this.props.movieStore.movies.results.length === 0 && <NotFound />}
       </>
     );
   }
