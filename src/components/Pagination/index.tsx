@@ -22,7 +22,11 @@ export class Pagination extends React.Component<IProps> {
       list-style: none;
     `;
 
-    const PageItem = styled.li`
+    const PageItem = styled.li<{ active?: boolean }>`
+      background-color: ${props => (props.active ? "#10162a" : "white")};
+      border-radius: ${props => (props.active ? "50%" : "")};
+      border: ${props => (props.active ? "1px solid orange" : "none")};
+      padding: 0.3em;
       color: orange;
       display: inline-block;
       margin: 0 auto;
@@ -32,11 +36,18 @@ export class Pagination extends React.Component<IProps> {
 
     const changePage = async (page: string) => {
       this.props.movieStore!.changePage(page);
-      await this.props.movieStore!.getMovies();
+      this.props.movieStore!.getMovies();
     };
 
     const displayPageList = (pages: any[]) => {
       const list = pages.map((page: any, idx) => {
+        if (page === activePage) {
+          return (
+            <PageItem onClick={() => changePage(page)} key={idx} active>
+              {page}
+            </PageItem>
+          );
+        }
         return (
           <PageItem onClick={() => changePage(page)} key={idx}>
             {page}

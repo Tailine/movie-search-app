@@ -67,6 +67,7 @@ export class Movies extends React.Component<IParamsProps> {
       border-radius: 10px 0 0 10px;
 
       @media (min-width: 760px) {
+        min-height: 400px;
         height: 100%;
       }
     `;
