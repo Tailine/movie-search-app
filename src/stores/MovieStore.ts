@@ -11,12 +11,18 @@ export class MovieStore {
   @observable public userInput: string = "";
 
   @action
-  public getMovies = async (page?: string) => {
+  public getMovies = async (query?: string) => {
+    const searchParam = query ? this.updateUserInput(query) : this.userInput;
     this.isLoadingMovieDetails = true;
-    this.movies = await getMovies(this.userInput, page!);
+    this.movies = await getMovies(searchParam, this.page);
     this.isLoadingMovieDetails = false;
   };
 
+  @action
+  public updateUserInput = (query: string) => {
+    return this.userInput = query;
+  }
+ 
   @action
   public getMovieDetails = async (movieId: string) => {
     this.isLoadingMovieDetails = true;

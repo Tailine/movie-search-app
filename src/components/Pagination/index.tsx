@@ -31,8 +31,8 @@ export class Pagination extends React.Component<IProps> {
     `;
 
     const changePage = async (page: string) => {
-      await this.props.movieStore!.getMovies(page);
       this.props.movieStore!.changePage(page);
+      await this.props.movieStore!.getMovies();
       console.log(this.props.movieStore!.page);
     };
 

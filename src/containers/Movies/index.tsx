@@ -4,8 +4,8 @@ import { SearchInput } from "src/components/SearchInput";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Loading, NotFound } from "src/components/BaseComponents";
 import { inject, observer } from "mobx-react";
+import { toJS } from 'mobx';
 import { MovieStore } from "../../stores";
-import { toJS } from "mobx";
 import { Pagination } from "src/components/Pagination";
 
 interface IParamsProps extends RouteComponentProps<{ value?: string }> {
@@ -17,7 +17,8 @@ interface IParamsProps extends RouteComponentProps<{ value?: string }> {
 export class Movies extends React.Component<IParamsProps> {
   public componentDidMount = () => {
     this.getGenres();
-    if (this.props.match.params) {
+    if (this.props.match.params.value) {
+      console.log('funcao chamada');
       this.onSubmitSearch(this.props.match.params.value);
     }
   };
@@ -68,7 +69,7 @@ export class Movies extends React.Component<IParamsProps> {
       border-radius: 10px 0 0 10px;
 
       @media (min-width: 760px) {
-        max-height: 100%;
+        height: 100%;
       }
     `;
 
